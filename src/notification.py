@@ -2650,6 +2650,21 @@ class NotificationService:
                     logger.error("飞书会话（Stream）推送失败")
             except Exception as e:
                 logger.error(f"飞书会话（Stream）推送异常: {e}")
+        
+        # 如果没有来源消息上下文，尝试使用配置的 receiver_id
+        if not success:
+            from src.config import get_config
+            config = get_config()
+            receiver_id = getattr(config, 'feishu_receiver_id', None)
+            if receiver_id:
+                try:
+                    if self._send_feishu_stream_reply(receiver_id, content):
+                        logger.info(f"已通过飞书 Stream 推送到 receiver_id: {receiver_id[:10]}...")
+                        success = True
+                    else:
+                        logger.error("飞书 Stream 推送到 receiver_id 失败")
+                except Exception as e:
+                    logger.error(f"飞书 Stream 推送异常: {e}")
 
         return success
 
