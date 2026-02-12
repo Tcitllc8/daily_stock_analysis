@@ -39,5 +39,7 @@ jobs:
           FEISHU_RECEIVER_ID: ${{ secrets.FEISHU_RECEIVER_ID }}
           ITICK_TOKEN: ${{ secrets.ITICK_TOKEN }}
           TUSHARE_TOKEN: ${{ secrets.TUSHARE_TOKEN }}
+          # 启用飞书 Stream 长连接推送
+          FEISHU_STREAM_ENABLED: true
         run: |
           python main.py
